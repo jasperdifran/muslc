@@ -21,11 +21,3 @@ bootstrapping, and Linux distributions built on musl can be found on
 the project website:
 
     http://www.musl-libc.org/
-
-## Building for selcp
-```
-./configure --prefix=build CC=aarch64-none-elf-gcc
-make
-```
-
-Then use `/host/sDDF/echo_server/musl/build/lib/libc.a` as the library, and `/host/sDDF/echo_server/musl/build/include` as the include path.
