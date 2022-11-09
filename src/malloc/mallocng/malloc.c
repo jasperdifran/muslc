@@ -76,32 +76,24 @@ static const uint8_t med_cnt_tab[4] = {28, 24, 20, 32};
 
 struct malloc_context ctx = {0};
 
-void sel4cp_dbg_puts(char *str);
-
 struct meta *alloc_meta(void)
 {
-    sel4cp_dbg_puts("alloc_meta\n");
     struct meta *m;
     unsigned char *p;
-    sel4cp_dbg_puts("alloc_meta 1\n");
     if (!ctx.init_done)
     {
 #ifndef PAGESIZE
-        sel4cp_dbg_puts("alloc_meta 1.1\n");
         ctx.pagesize = get_page_size();
 #endif
-        sel4cp_dbg_puts("alloc_meta 1.2\n");
-        ctx.secret = get_random_secret();
-        sel4cp_dbg_puts("alloc_meta 1.3\n");
+        // Temporary fix!!
+        ctx.secret = 0x329843; // get_random_secret();
         ctx.init_done = 1;
     }
-    sel4cp_dbg_puts("alloc_meta 2\n");
     size_t pagesize = PGSZ;
     if (pagesize < 4096)
         pagesize = 4096;
     if ((m = dequeue_head(&ctx.free_meta_head)))
         return m;
-    sel4cp_dbg_puts("alloc_meta 3\n");
     if (!ctx.avail_meta_count)
     {
         int need_unprotect = 1;
@@ -111,10 +103,8 @@ struct meta *alloc_meta(void)
             int need_guard = 0;
             if (!ctx.brk)
             {
-                sel4cp_dbg_puts("alloc_meta 4\n");
                 need_guard = 1;
                 ctx.brk = brk(0);
-                sel4cp_dbg_puts("alloc_meta 5\n");
                 // some ancient kernels returned _ebss
                 // instead of next page as initial brk.
                 ctx.brk += -ctx.brk & (pagesize - 1);
@@ -396,7 +386,6 @@ static int alloc_slot(int sc, size_t req)
 
 void *malloc(size_t n)
 {
-    sel4cp_dbg_puts("Malloc\n");
     if (size_overflows(n))
         return 0;
     struct meta *g;
