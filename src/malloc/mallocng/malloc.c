@@ -86,7 +86,7 @@ struct meta *alloc_meta(void)
         ctx.pagesize = get_page_size();
 #endif
         // Temporary fix!!
-        ctx.secret = 0x329843; // get_random_secret();
+        ctx.secret = get_random_secret();
         ctx.init_done = 1;
     }
     size_t pagesize = PGSZ;
