@@ -100,6 +100,8 @@ static struct mapinfo nontrivial_free(struct meta *g, int i)
 
 void free(void *p)
 {
+    // TODO remove this!! Bad bad bad
+    return;
 	if (!p) return;
 
 	struct meta *g = get_meta(p);
